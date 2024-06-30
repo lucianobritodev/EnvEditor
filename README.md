@@ -1,11 +1,11 @@
 # Env Editor
 
-Editor Gráfico de variáveis de ambiente para distros Línux.
+Editor gráfico de variáveis de ambiente para distribuições Linux.
 
 
 ## Descrição
 
-Aplicação desenvolvida utilizando Java 21 com JavaFX.
+Aplicação opensource desenvolvida em Java utilizando JavaFX.
 O objetivo desse projeto é fornecer uma interface amigável para gerenciar variáveis de anbiente em distribuições Línux.
 
 
