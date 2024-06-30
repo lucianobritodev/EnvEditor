@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="367.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.lucianobrito.enveditor.controllers.ModalController">
+   <children>
+      <Label fx:id="lblTitleModal" alignment="CENTER" layoutX="81.0" layoutY="22.0" prefHeight="18.0" prefWidth="236.0" text="Inclusão de Variável de Usuário" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label focusTraversable="true" layoutX="31.0" layoutY="66.0" text="Chave:" />
+      <TextField fx:id="txtChaveEnvModal" layoutX="30.0" layoutY="93.0" prefHeight="32.0" prefWidth="337.0" promptText="Digite o nome com letras maiúsculas">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </TextField>
+      <Label layoutX="31.0" layoutY="151.0" text="Valor:" />
+      <TextArea fx:id="areaValorEnvModal" layoutX="30.0" layoutY="178.0" prefHeight="95.0" prefWidth="337.0" promptText="Use ':' como separador" />
+      <Button layoutX="279.0" layoutY="306.0" mnemonicParsing="false" onAction="#btnModalConfirmar" prefHeight="32.0" prefWidth="88.0" text="Confirmar" />
+      <Button layoutX="33.0" layoutY="306.0" mnemonicParsing="false" onAction="#btnModalCancelar" prefHeight="32.0" prefWidth="88.0" text="Cancelar" />
+
+   </children>
+</AnchorPane>
