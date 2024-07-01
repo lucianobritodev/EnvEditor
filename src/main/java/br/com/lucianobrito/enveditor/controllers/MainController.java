@@ -53,8 +53,8 @@ public class MainController implements Initializable {
     @FXML
     protected void btnEditarEnvLocal() {
         String env = this.localEnvsListView.getSelectionModel().getSelectedItem().toString();
-        String chave = env.replaceAll("=.*$", "");
-        String valor = env.replaceAll("^.*=", "").replaceAll("\"+", "");
+        String chave = getEnvKey(env);
+        String valor = getEnvValue(env);
 
         openModalEdicao(USUARIO, chave, valor, this.localEnvsListView);
     }
@@ -82,8 +82,8 @@ public class MainController implements Initializable {
     @FXML
     protected void btnEditarEnvGlobal() {
         String env = this.globalEnvsListView.getSelectionModel().getSelectedItem().toString();
-        String chave = env.replaceAll("=.*$", "");
-        String valor = env.replaceAll("^.*=", "").replaceAll("\"+", "");
+        String chave = getEnvKey(env);
+        String valor = getEnvValue(env);
 
         openModalEdicao(SISTEMA, chave, valor, this.globalEnvsListView);
     }
@@ -92,6 +92,19 @@ public class MainController implements Initializable {
     protected void btnExcluirEnvGlobal() {
         String env = this.globalEnvsListView.getSelectionModel().getSelectedItem().toString();
         this.globalEnvsListView.getItems().remove(env);
+    }
+
+    @FXML
+    protected void btnSobre() throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/sobre.fxml"));
+        AnchorPane pane = loader.load();
+
+        stage.setScene(new Scene(pane));
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
     }
 
 
@@ -173,5 +186,13 @@ public class MainController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getEnvKey(String env) {
+        return env.replaceAll("=.*$", "").toUpperCase();
+    }
+
+    private String getEnvValue(String env) {
+        return env.replaceAll("^.*=", "");
     }
 }
