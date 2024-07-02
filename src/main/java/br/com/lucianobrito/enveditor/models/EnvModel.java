@@ -24,6 +24,18 @@ public class EnvModel {
         return chaveAnterior;
     }
 
+    public void setChave(String chave) {
+        this.chave = chave;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
+    public void setChaveAnterior(String chaveAnterior) {
+        this.chaveAnterior = chaveAnterior;
+    }
+
     @Override
     public String toString() {
         return "EnvModel{" +

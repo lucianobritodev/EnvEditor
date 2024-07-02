@@ -19,6 +19,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -28,6 +29,8 @@ public class MainController implements Initializable {
     private static final String SISTEMA = "Sistema";
     private static final String INCLUSAO = "Inclusão";
     private static final String ALTERACAO = "Alteração";
+
+    private EnvFilesService service;
 
 
     @FXML
@@ -39,7 +42,6 @@ public class MainController implements Initializable {
 
     @FXML
     protected void btnRecarregarEnvLocal() {
-        EnvFilesService service = EnvFilesService.getInstance();
         List<String> envs = service.readEnvFile(Env.LOCAL);
         ObservableList<String> observableList = FXCollections.observableList(envs);
         this.localEnvsListView.setItems(observableList);
@@ -53,8 +55,8 @@ public class MainController implements Initializable {
     @FXML
     protected void btnEditarEnvLocal() {
         String env = this.localEnvsListView.getSelectionModel().getSelectedItem().toString();
-        String chave = getEnvKey(env);
-        String valor = getEnvValue(env);
+        String chave = service.getEnvKey(env);
+        String valor = service.getEnvValue(env);
 
         openModalEdicao(USUARIO, chave, valor, this.localEnvsListView);
     }
@@ -67,8 +69,6 @@ public class MainController implements Initializable {
 
     @FXML
     protected void btnRecarregarEnvGlobal() {
-
-        EnvFilesService service = EnvFilesService.getInstance();
         List<String> envs = service.readEnvFile(Env.GLOBAL);
         ObservableList<String> observableList = FXCollections.observableList(envs);
         this.globalEnvsListView.setItems(observableList);
@@ -82,8 +82,8 @@ public class MainController implements Initializable {
     @FXML
     protected void btnEditarEnvGlobal() {
         String env = this.globalEnvsListView.getSelectionModel().getSelectedItem().toString();
-        String chave = getEnvKey(env);
-        String valor = getEnvValue(env);
+        String chave = service.getEnvKey(env);
+        String valor = service.getEnvValue(env);
 
         openModalEdicao(SISTEMA, chave, valor, this.globalEnvsListView);
     }
@@ -107,11 +107,14 @@ public class MainController implements Initializable {
         stage.show();
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        btnRecarregarEnvLocal();
-        btnRecarregarEnvGlobal();
+        try {
+            service = EnvFilesService.getInstance();
+            reload();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void btnCancelar(ActionEvent actionEvent) {
@@ -120,7 +123,19 @@ public class MainController implements Initializable {
     }
 
     public void btnSalvar(ActionEvent actionEvent) {
+        List<EnvModel> listLocal = new ArrayList<>();
+        this.localEnvsListView.getItems().forEach(item -> listLocal
+                .add(new EnvModel(service.getEnvKey(item.toString()), service.getEnvValue(item.toString()), null))
+        );
+        service.salvar(Env.LOCAL, listLocal);
 
+        List<EnvModel> listGlobal = new ArrayList<>();
+        this.globalEnvsListView.getItems().forEach(item -> listGlobal
+                .add(new EnvModel(service.getEnvKey(item.toString()), service.getEnvValue(item.toString()), null))
+        );
+        service.salvar(Env.GLOBAL, listGlobal);
+
+        reload();
     }
 
     private void openModalInclusao(String titulo, ListView<String> listView) {
@@ -174,7 +189,7 @@ public class MainController implements Initializable {
                     ObservableList<String> newList = FXCollections.observableArrayList();
                     listView.getItems().forEach(item -> {
                         if (envModel.getChaveAnterior().equals(item.replaceAll("=.*$", ""))) {
-                            item = envModel.getChave().toUpperCase() + "=\"" + envModel.getValor() + "\"";
+                            item = envModel.getChave().toUpperCase() + "=\"" + envModel.getValor().replaceAll("\"+", "") + "\"";
                         }
                         newList.add(item);
                     });
@@ -188,11 +203,8 @@ public class MainController implements Initializable {
         }
     }
 
-    private String getEnvKey(String env) {
-        return env.replaceAll("=.*$", "").toUpperCase();
-    }
-
-    private String getEnvValue(String env) {
-        return env.replaceAll("^.*=", "");
+    private void reload() {
+        btnRecarregarEnvLocal();
+        btnRecarregarEnvGlobal();
     }
 }

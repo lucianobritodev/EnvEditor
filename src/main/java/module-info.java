@@ -7,6 +7,7 @@ module br.com.lucianobrito.enveditor {
     requires net.synedra.validatorfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.xml;
+    requires java.logging;
 
     opens br.com.lucianobrito.enveditor to javafx.fxml;
     exports br.com.lucianobrito.enveditor;

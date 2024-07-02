@@ -5,7 +5,7 @@ import br.com.lucianobrito.enveditor.utils.EnvUtils;
 public enum Env {
 
     GLOBAL("/etc/environment"),
-    LOCAL(EnvUtils.USER_HOME + "/.profile");
+    LOCAL(EnvUtils.USER_HOME + "/.environment");
 
     private String value;
 
