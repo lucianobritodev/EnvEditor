@@ -2,15 +2,19 @@ package br.com.lucianobrito.enveditor.controllers;
 
 import br.com.lucianobrito.enveditor.MainApplication;
 import br.com.lucianobrito.enveditor.models.EnvModel;
+import br.com.lucianobrito.enveditor.models.enuns.Env;
 import br.com.lucianobrito.enveditor.service.EnvFilesService;
-import br.com.lucianobrito.enveditor.service.enuns.Env;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -25,12 +29,30 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
+    private boolean isLocalEnvChanged;
+    private boolean isGlobalEnvChanged;
+
     private static final String USUARIO = "Usuário";
     private static final String SISTEMA = "Sistema";
     private static final String INCLUSAO = "Inclusão";
     private static final String ALTERACAO = "Alteração";
 
     private EnvFilesService service;
+
+    @FXML
+    private Button btnLocalEnvEditar;
+
+    @FXML
+    private Button btnLocalEnvExcluir;
+
+    @FXML
+    private Button btnGlobalEnvEditar;
+
+    @FXML
+    private Button btnGlobalEnvExcluir;
+
+    @FXML
+    private Label lblMessage;
 
 
     @FXML
@@ -41,61 +63,63 @@ public class MainController implements Initializable {
 
 
     @FXML
-    protected void btnRecarregarEnvLocal() {
+    protected void recarregarEnvLocal() {
         List<String> envs = service.readEnvFile(Env.LOCAL);
         ObservableList<String> observableList = FXCollections.observableList(envs);
         this.localEnvsListView.setItems(observableList);
     }
 
     @FXML
-    public void btnIncluirEnvLocal() {
-        openModalInclusao(USUARIO, localEnvsListView);
+    public void incluirEnvLocal(ActionEvent event) {
+        openModalInclusao(event, Env.LOCAL, USUARIO, localEnvsListView);
     }
 
     @FXML
-    protected void btnEditarEnvLocal() {
+    protected void editarEnvLocal() {
         String env = this.localEnvsListView.getSelectionModel().getSelectedItem().toString();
         String chave = service.getEnvKey(env);
         String valor = service.getEnvValue(env);
 
-        openModalEdicao(USUARIO, chave, valor, this.localEnvsListView);
+        openModalEdicao(Env.LOCAL, USUARIO, chave, valor, this.localEnvsListView);
     }
 
     @FXML
-    protected void btnExcluirEnvLocal() {
+    protected void excluirEnvLocal() {
         String env = this.localEnvsListView.getSelectionModel().getSelectedItem().toString();
         this.localEnvsListView.getItems().remove(env);
+        isLocalEnvChanged = true;
     }
 
     @FXML
-    protected void btnRecarregarEnvGlobal() {
+    protected void recarregarEnvGlobal() {
         List<String> envs = service.readEnvFile(Env.GLOBAL);
         ObservableList<String> observableList = FXCollections.observableList(envs);
         this.globalEnvsListView.setItems(observableList);
     }
 
     @FXML
-    public void btnIncluirEnvGlobal() {
-        openModalInclusao(SISTEMA, globalEnvsListView);
+    public void incluirEnvGlobal(ActionEvent event) {
+        openModalInclusao(event, Env.GLOBAL, SISTEMA, globalEnvsListView);
     }
 
     @FXML
-    protected void btnEditarEnvGlobal() {
+    protected void editarEnvGlobal() {
         String env = this.globalEnvsListView.getSelectionModel().getSelectedItem().toString();
         String chave = service.getEnvKey(env);
         String valor = service.getEnvValue(env);
 
-        openModalEdicao(SISTEMA, chave, valor, this.globalEnvsListView);
+        openModalEdicao(Env.GLOBAL, SISTEMA, chave, valor, this.globalEnvsListView);
     }
 
     @FXML
-    protected void btnExcluirEnvGlobal() {
+    protected void excluirEnvGlobal() {
         String env = this.globalEnvsListView.getSelectionModel().getSelectedItem().toString();
         this.globalEnvsListView.getItems().remove(env);
+        isGlobalEnvChanged = true;
     }
 
     @FXML
-    protected void btnSobre() throws IOException {
+    protected void sobre() throws IOException {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/sobre.fxml"));
         AnchorPane pane = loader.load();
@@ -110,35 +134,67 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            isLocalEnvChanged = false;
+            isGlobalEnvChanged = false;
             service = EnvFilesService.getInstance();
-            reload();
+            recarregarEnvLocal();
+            recarregarEnvGlobal();
+
+            btnLocalEnvEditar.setDisable(true);
+            btnLocalEnvExcluir.setDisable(true);
+            btnGlobalEnvEditar.setDisable(true);
+            btnGlobalEnvExcluir.setDisable(true);
+
+            localEnvsListView.getSelectionModel()
+                    .selectedItemProperty()
+                    .addListener((ObservableValue observableValue, Object o, Object t1) -> {
+                        btnLocalEnvEditar.setDisable(false);
+                        btnLocalEnvExcluir.setDisable(false);
+                    });
+
+            globalEnvsListView.getSelectionModel()
+                    .selectedItemProperty()
+                    .addListener((ObservableValue observableValue, Object o, Object t1) -> {
+                        btnGlobalEnvEditar.setDisable(false);
+                        btnGlobalEnvExcluir.setDisable(false);
+                    });
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void btnCancelar(ActionEvent actionEvent) {
+    public void cancelar() {
         MainApplication.stage = null;
         System.exit(0);
     }
 
-    public void btnSalvar(ActionEvent actionEvent) {
-        List<EnvModel> listLocal = new ArrayList<>();
-        this.localEnvsListView.getItems().forEach(item -> listLocal
-                .add(new EnvModel(service.getEnvKey(item.toString()), service.getEnvValue(item.toString()), null))
-        );
-        service.salvar(Env.LOCAL, listLocal);
+    public void salvar(ActionEvent event) throws InterruptedException {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
 
-        List<EnvModel> listGlobal = new ArrayList<>();
-        this.globalEnvsListView.getItems().forEach(item -> listGlobal
-                .add(new EnvModel(service.getEnvKey(item.toString()), service.getEnvValue(item.toString()), null))
-        );
-        service.salvar(Env.GLOBAL, listGlobal);
+        if (isLocalEnvChanged) {
+            List<EnvModel> listLocal = new ArrayList<>();
+            this.localEnvsListView.getItems().forEach(item -> listLocal.add(
+                    new EnvModel(service.getEnvKey(item.toString()), service.getEnvValue(item.toString()), null)));
 
-        reload();
+            service.salvar(Env.LOCAL, listLocal);
+            recarregarEnvLocal();
+        }
+
+        if (isGlobalEnvChanged) {
+            List<EnvModel> listGlobal = new ArrayList<>();
+            this.globalEnvsListView.getItems().forEach(item -> listGlobal.add(
+                    new EnvModel(service.getEnvKey(item.toString()), service.getEnvValue(item.toString()), null)));
+
+            service.salvar(Env.GLOBAL, listGlobal);
+            recarregarEnvGlobal();
+        }
+
+        cancelar();
     }
 
-    private void openModalInclusao(String titulo, ListView<String> listView) {
+    private void openModalInclusao(ActionEvent event, Env env, String titulo, ListView<String> listView) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/modal-inclusao.fxml"));
@@ -148,7 +204,7 @@ public class MainController implements Initializable {
             controller.setLblTitleModal(String.format("%s de Variável de %s", INCLUSAO, titulo));
 
             stage.setScene(new Scene(pane));
-            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setResizable(false);
             stage.show();
@@ -157,6 +213,11 @@ public class MainController implements Initializable {
                 EnvModel envModel = (EnvModel) stage.getUserData();
                 if (envModel != null && listView != null) {
                     listView.getItems().add(envModel.getChave().toUpperCase() + "=\"" + envModel.getValor() + "\"");
+                    if (Env.LOCAL.equals(env)) {
+                        isLocalEnvChanged = true;
+                    } else {
+                        isGlobalEnvChanged = true;
+                    }
                 }
             });
 
@@ -165,7 +226,7 @@ public class MainController implements Initializable {
         }
     }
 
-    private void openModalEdicao(String titulo, String chave, String valor, ListView<String> listView) {
+    private void openModalEdicao(Env env, String titulo, String chave, String valor, ListView<String> listView) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/modal-inclusao.fxml"));
@@ -195,16 +256,17 @@ public class MainController implements Initializable {
                     });
 
                     listView.setItems(newList);
+
+                    if (Env.LOCAL.equals(env)) {
+                        isLocalEnvChanged = true;
+                    } else {
+                        isGlobalEnvChanged = true;
+                    }
                 }
             });
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void reload() {
-        btnRecarregarEnvLocal();
-        btnRecarregarEnvGlobal();
     }
 }

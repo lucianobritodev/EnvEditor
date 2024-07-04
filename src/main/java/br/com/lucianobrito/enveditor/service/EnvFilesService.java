@@ -1,7 +1,7 @@
 package br.com.lucianobrito.enveditor.service;
 
 import br.com.lucianobrito.enveditor.models.EnvModel;
-import br.com.lucianobrito.enveditor.service.enuns.Env;
+import br.com.lucianobrito.enveditor.models.enuns.Env;
 import br.com.lucianobrito.enveditor.utils.EnvUtils;
 
 import java.io.BufferedReader;
@@ -30,6 +30,7 @@ public class EnvFilesService {
     private List<EnvModel> globalEnvs = new ArrayList<>();
 
     private EnvFilesService() {
+        initConfiguration();
     }
 
     public static synchronized EnvFilesService getInstance() throws IOException {
@@ -48,8 +49,6 @@ public class EnvFilesService {
 
         List<String> envs = new ArrayList<>();
         try {
-            createLocalEnvs(env);
-
             BufferedReader bf = new BufferedReader(new FileReader(env.getValue()));
             String line = bf.readLine();
             while (line != null) {
@@ -82,18 +81,23 @@ public class EnvFilesService {
         }
     }
 
-    private void createLocalEnvs(Env env) throws IOException {
-        if (Env.LOCAL.equals(env)) {
-            File file = new File(env.getValue());
+    private void initConfiguration() {
+        createLocalEnvFile();
+        configLocalBashrc();
+    }
+
+    private void createLocalEnvFile() {
+        try {
+            File file = new File(Env.LOCAL.getValue());
             if (!file.exists()) {
                 Boolean result = file.createNewFile();
                 if (!result) {
-                    throw new RuntimeException("Erro ao criar o arquivo " + env.getValue());
+                    throw new RuntimeException("Erro ao criar o arquivo " + Env.LOCAL.getValue());
                 }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        configLocalBashrc();
     }
 
     private void configLocalBashrc() {
@@ -127,8 +131,8 @@ public class EnvFilesService {
         String pathEnvPersist = env.getValue();
         try {
             File file = new File(pathEnvPersist);
-            file.deleteOnExit();
-            file.createNewFile();
+//            file.deleteOnExit();
+//            file.createNewFile();
             persistFile(file, newEnvModels);
 
         } catch (IOException e) {

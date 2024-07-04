@@ -1,4 +1,4 @@
-package br.com.lucianobrito.enveditor.service.enuns;
+package br.com.lucianobrito.enveditor.models.enuns;
 
 import br.com.lucianobrito.enveditor.utils.EnvUtils;
 

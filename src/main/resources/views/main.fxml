@@ -15,26 +15,26 @@
                <children>
                   <Label layoutX="480.0" layoutY="14.0" text="Variáveis de Ambiente com Escopo de Usuário" />
                   <ListView fx:id="localEnvsListView" layoutX="14.0" layoutY="39.0" prefHeight="330.0" prefWidth="1127.0" />
-                  <Button layoutX="1156.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnRecarregarEnvLocal" prefHeight="28.0" prefWidth="94.0" text="Recarregar" />
-                  <Button layoutX="1156.0" layoutY="153.0" mnemonicParsing="false" onAction="#btnIncluirEnvLocal" prefHeight="28.0" prefWidth="94.0" text="Incluir" />
-                  <Button layoutX="1156.0" layoutY="206.0" mnemonicParsing="false" onAction="#btnEditarEnvLocal" prefHeight="28.0" prefWidth="94.0" text="Editar" />
-                  <Button layoutX="1156.0" layoutY="259.0" mnemonicParsing="false" onAction="#btnExcluirEnvLocal" prefHeight="28.0" prefWidth="94.0" text="Excluir" />
+                  <Button layoutX="1156.0" layoutY="100.0" mnemonicParsing="false" onAction="#recarregarEnvLocal" prefHeight="28.0" prefWidth="94.0" text="Recarregar" />
+                  <Button layoutX="1156.0" layoutY="153.0" mnemonicParsing="false" onAction="#incluirEnvLocal" prefHeight="28.0" prefWidth="94.0" text="Incluir" />
+                  <Button fx:id="btnLocalEnvEditar" layoutX="1156.0" layoutY="206.0" mnemonicParsing="false" onAction="#editarEnvLocal" prefHeight="28.0" prefWidth="94.0" text="Editar" />
+                  <Button fx:id="btnLocalEnvExcluir" layoutX="1156.0" layoutY="259.0" mnemonicParsing="false" onAction="#excluirEnvLocal" prefHeight="28.0" prefWidth="94.0" text="Excluir" />
                </children>
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
                   <Label layoutX="479.0" layoutY="14.0" text="Variáveis de Ambiente com Escopo de Sistema" />
                   <ListView fx:id="globalEnvsListView" layoutX="16.0" layoutY="39.0" prefHeight="330.0" prefWidth="1127.0" />
-                  <Button layoutX="1156.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnRecarregarEnvGlobal" prefHeight="28.0" prefWidth="94.0" text="Recarregar" />
-                  <Button layoutX="1156.0" layoutY="153.0" mnemonicParsing="false" onAction="#btnIncluirEnvGlobal" prefHeight="28.0" prefWidth="94.0" text="Incluir" />
-                  <Button layoutX="1156.0" layoutY="206.0" mnemonicParsing="false" onAction="#btnEditarEnvGlobal" prefHeight="28.0" prefWidth="94.0" text="Editar" />
-                  <Button fx:id="btnExcluirEnvGlobal" layoutX="1156.0" layoutY="259.0" mnemonicParsing="false" onAction="#btnExcluirEnvGlobal" prefHeight="28.0" prefWidth="94.0" text="Excluir" />
+                  <Button layoutX="1156.0" layoutY="100.0" mnemonicParsing="false" onAction="#recarregarEnvGlobal" prefHeight="28.0" prefWidth="94.0" text="Recarregar" />
+                  <Button layoutX="1156.0" layoutY="153.0" mnemonicParsing="false" onAction="#incluirEnvGlobal" prefHeight="28.0" prefWidth="94.0" text="Incluir" />
+                  <Button fx:id="btnGlobalEnvEditar" layoutX="1156.0" layoutY="206.0" mnemonicParsing="false" onAction="#editarEnvGlobal" prefHeight="28.0" prefWidth="94.0" text="Editar" />
+                  <Button fx:id="btnGlobalEnvExcluir" layoutX="1156.0" layoutY="259.0" mnemonicParsing="false" onAction="#excluirEnvGlobal" prefHeight="28.0" prefWidth="94.0" text="Excluir" />
                </children>
             </AnchorPane>
          </items>
       </SplitPane>
-      <Button layoutX="951.0" layoutY="749.0" mnemonicParsing="false" onAction="#btnCancelar" prefHeight="28.0" prefWidth="94.0" text="Cancelar" />
-      <Button layoutX="1056.0" layoutY="749.0" mnemonicParsing="false" onAction="#btnSalvar" prefHeight="28.0" prefWidth="94.0" text="Salvar" />
-      <Button layoutX="24.0" layoutY="749.0" mnemonicParsing="false" onAction="#btnSobre" prefHeight="28.0" prefWidth="94.0" text="Sobre" />
+      <Button layoutX="911.0" layoutY="749.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="28.0" prefWidth="94.0" text="Cancelar" />
+      <Button layoutX="1037.0" layoutY="749.0" mnemonicParsing="false" onAction="#salvar" prefHeight="28.0" prefWidth="113.0" text="Salvar e sair" />
+      <Button layoutX="24.0" layoutY="749.0" mnemonicParsing="false" onAction="#sobre" prefHeight="28.0" prefWidth="94.0" text="Sobre" />
    </children>
 </Pane>
