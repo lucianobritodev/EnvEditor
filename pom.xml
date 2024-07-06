@@ -87,10 +87,6 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
-                <configuration>
-                    <basedir>/home/luciano/Workspace/Videira/Videira/EnvEditor/target</basedir>
-                    <mainClass>${mainClass}</mainClass>
-                </configuration>
                 <executions>
                     <execution>
                         <!-- Default configuration for running with: mvn clean javafx:run -->

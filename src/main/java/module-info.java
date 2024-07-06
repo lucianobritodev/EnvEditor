@@ -1,7 +1,10 @@
 module br.com.lucianobrito.enveditor {
     requires javafx.controls;
     requires javafx.fxml;
-
+    requires javafx.graphics;
+    requires java.base;
+    requires java.desktop;
+    
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
