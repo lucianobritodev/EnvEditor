@@ -13,6 +13,12 @@ Aplicação opensource desenvolvida em Java utilizando JavaFX.
 O objetivo desse projeto é fornecer uma interface amigável para gerenciar variáveis de anbiente em distribuições Línux.
 
 
+## Downloads
+
+[DEB x64](./out/bin/env-editor_1.0.0_amd64.deb)
+[TAR.XZ x64](./out/bin/env-editor_1.0.0_amd64.tar.xz)
+
+
 ## Contribuidor
 
 [Luciano Brito](https://github.com/lucianobritodev)
