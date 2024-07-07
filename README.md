@@ -1,5 +1,9 @@
 # Env Editor
 
+![GitHub Tag](https://img.shields.io/github/v/tag/lucianobritodev/EnvEditor)
+![GitHub License](https://img.shields.io/github/license/lucianobritodev/EnvEditor)
+![GitHub top language](https://img.shields.io/github/languages/top/lucianobritodev/EnvEditor)
+
 Editor gráfico de variáveis de ambiente para distribuições Linux.
 
 
