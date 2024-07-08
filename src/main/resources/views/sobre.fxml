@@ -22,6 +22,6 @@
       </Text>
       <Button layoutX="293.0" layoutY="323.0" mnemonicParsing="false" onAction="#btnFechar" prefHeight="30.0" prefWidth="82.0" text="Fechar" />
       <Text layoutX="16.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="366.001953125" />
-      <TextArea editable="false" layoutX="15.0" layoutY="153.0" prefHeight="159.0" prefWidth="366.0" text="Aplicativo opensource para edição de variáveis de &#10;ambiente em distribuições Linux.&#10;&#10;Versão: 1.0.0&#10;Autor: Luciano Brito&#10;Licença: GPL-2.0&#10;Repositório: &#10;https://github.com/lucianobritodev/EnvEditor" />
+      <TextArea fx:id="txtArea" editable="false" layoutX="15.0" layoutY="153.0" prefHeight="159.0" prefWidth="366.0" />
    </children>
 </AnchorPane>
