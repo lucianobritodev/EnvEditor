@@ -20,7 +20,6 @@ public class EnvFilesService {
 
     private static FileHandler fileHandler;
     private static EnvFilesService instance;
-    private static final String VERSION_APP_FILE = "app.version";
     private static final String BASH_RC = EnvUtils.USER_HOME + "/.bashrc";
     private static final String INSTRUCTION_IMPORT = "[ -f " + Env.LOCAL + " ] && source " + Env.LOCAL;
 

@@ -1,6 +1,5 @@
 package br.com.lucianobrito.enveditor.controllers;
 
-import br.com.lucianobrito.enveditor.service.EnvFilesService;
 import br.com.lucianobrito.enveditor.utils.EnvUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

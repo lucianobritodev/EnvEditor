@@ -11,7 +11,6 @@ public final class EnvUtils {
 
     public static String USER_HOME;
     public static String APP_VERSION;
-    public static final String SYSTEM_NAME = System.getProperty("os.name");
     public static final String SYSTEM_ARCH = System.getProperty("os.arch");
     public static final String ENV_EDITOR_HOME = USER_HOME + "/.cache/enveditor";
 
