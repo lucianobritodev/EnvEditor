@@ -42,7 +42,7 @@ public class ModalController {
     }
 
     public void setAreaValorEnvModal(String areaValorEnvModal) {
-        this.areaValorEnvModal.setText(areaValorEnvModal);
+        this.areaValorEnvModal.setText(areaValorEnvModal.replaceAll("\"", ""));
     }
 
     private void closeModal(ActionEvent event, EnvModel envModel) {

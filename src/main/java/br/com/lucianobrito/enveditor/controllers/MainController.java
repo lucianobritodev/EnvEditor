@@ -159,8 +159,8 @@ public class MainController implements Initializable {
                         btnGlobalEnvExcluir.setDisable(false);
                     });
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -222,7 +222,7 @@ public class MainController implements Initializable {
             });
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -266,7 +266,7 @@ public class MainController implements Initializable {
             });
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
