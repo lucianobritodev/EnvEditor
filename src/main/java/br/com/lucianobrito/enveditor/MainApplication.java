@@ -36,6 +36,10 @@ public class MainApplication extends Application {
             if (env.contains("user.home")) {
                 EnvUtils.USER_HOME = env.replaceAll("^.*=", "");
             }
+
+            if (env.contains("app.version")) {
+                EnvUtils.APP_VERSION = env.replaceAll("^.*=", "");
+            }
         });
 
         launch();

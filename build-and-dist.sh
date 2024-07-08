@@ -96,7 +96,7 @@ EOF
 #!/usr/bin/env bash
 
 if [ -d '/opt/enveditor' ]; then
-  pkexec --disable-internal-agent env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY  '/opt/enveditor/bin/EnvEditor' user.home=${HOME}
+  pkexec --disable-internal-agent env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY  '/opt/enveditor/bin/EnvEditor' user.home=${HOME} app.version=${APP_VERSION}
 fi
 
 EOF

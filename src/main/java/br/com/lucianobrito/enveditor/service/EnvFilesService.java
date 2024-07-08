@@ -33,7 +33,6 @@ public class EnvFilesService {
 
     private EnvFilesService() {
         initConfiguration();
-        readVersionApp();
     }
 
     public static synchronized EnvFilesService getInstance() {
@@ -176,24 +175,5 @@ public class EnvFilesService {
 
     public String getEnvValue(String env) {
         return env.replaceAll("^.*=", "");
-    }
-
-    public String getVersionApp() {
-        return version;
-    }
-
-    private void readVersionApp() {
-        try {
-            BufferedReader file = new BufferedReader(new FileReader(VERSION_APP_FILE));
-            String line;
-            while ((line = file.readLine()) != null) {
-                version = line;
-            }
-
-            file.close();
-        } catch (IOException e) {
-            LOGGER.severe("Erro ao ler arquivo: " + VERSION_APP_FILE);
-            LOGGER.severe("Motivo: " + e.getMessage());
-        }
     }
 }

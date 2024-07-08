@@ -1,6 +1,7 @@
 package br.com.lucianobrito.enveditor.controllers;
 
 import br.com.lucianobrito.enveditor.service.EnvFilesService;
+import br.com.lucianobrito.enveditor.utils.EnvUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,7 +32,7 @@ public class SobreController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            version = EnvFilesService.getInstance().getVersionApp();
+            version = EnvUtils.APP_VERSION;
             txtArea.setText(getDescription());
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
