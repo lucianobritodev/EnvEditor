@@ -1,5 +1,6 @@
 package br.com.lucianobrito.enveditor;
 
+import br.com.lucianobrito.enveditor.utils.EnvUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class MainApplication extends Application {
     public static Stage stage;
@@ -29,6 +31,13 @@ public class MainApplication extends Application {
     }
 
     public static void main(String[] args) {
+
+        Stream.of(args).forEach(env -> {
+            if (env.contains("user.home")) {
+                EnvUtils.USER_HOME = env.replaceAll("^.*=", "");
+            }
+        });
+
         launch();
     }
 }

@@ -20,24 +20,26 @@ public class EnvFilesService {
 
     private static FileHandler fileHandler;
     private static EnvFilesService instance;
+    private static final String VERSION_APP_FILE = "app.version";
     private static final String BASH_RC = EnvUtils.USER_HOME + "/.bashrc";
-    private static final String INSTRUCTION_IMPORT = "[ -f " + EnvUtils.USER_HOME + "/.environment ] && source "
-            + EnvUtils.USER_HOME + "/.environment;";
+    private static final String INSTRUCTION_IMPORT = "[ -f " + Env.LOCAL + " ] && source " + Env.LOCAL;
+
 
     private final Logger LOGGER = Logger.getLogger(EnvFilesService.class.getName());
 
+    private String version;
     private List<EnvModel> localEnvs = new ArrayList<>();
     private List<EnvModel> globalEnvs = new ArrayList<>();
 
     private EnvFilesService() {
         initConfiguration();
+        readVersionApp();
     }
 
-    public static synchronized EnvFilesService getInstance() throws IOException {
+    public static synchronized EnvFilesService getInstance() {
         if (instance == null) {
             instance = new EnvFilesService();
             fileHandler = EnvUtils.getFileHander();
-            fileHandler.setEncoding("UTF-8");
             fileHandler.setFormatter(new SimpleFormatter());
             instance.LOGGER.addHandler(fileHandler);
         }
@@ -50,10 +52,9 @@ public class EnvFilesService {
         List<String> envs = new ArrayList<>();
         try {
             BufferedReader bf = new BufferedReader(new FileReader(env.getValue()));
-            String line = bf.readLine();
-            while (line != null) {
+            String line;
+            while ((line = bf.readLine()) != null) {
                 clearLine(env, line, envs);
-                line = bf.readLine();
             }
 
             bf.close();
@@ -104,12 +105,11 @@ public class EnvFilesService {
         try {
             boolean hasInstruction = false;
             BufferedReader bf = new BufferedReader(new FileReader(BASH_RC));
-            String line = bf.readLine();
-            while (line != null) {
+            String line;
+            while ((line = bf.readLine()) != null) {
                 if (INSTRUCTION_IMPORT.equals(line)) {
                     hasInstruction = true;
                 }
-                line = bf.readLine();
             }
             bf.close();
 
@@ -131,9 +131,11 @@ public class EnvFilesService {
         String pathEnvPersist = env.getValue();
         try {
             File file = new File(pathEnvPersist);
-//            file.deleteOnExit();
-//            file.createNewFile();
             persistFile(file, newEnvModels);
+
+            if (Env.GLOBAL.equals(env)) {
+                sourceRootEnv();
+            }
 
         } catch (IOException e) {
             LOGGER.severe("Erro ao persistir arquivo: " + pathEnvPersist);
@@ -146,6 +148,15 @@ public class EnvFilesService {
                 LOGGER.severe("Erro ao tentar reverter a persistência no arquivo: " + pathEnvPersist);
                 LOGGER.severe("Motivo: " + e.getMessage());
             }
+        }
+    }
+
+    private void sourceRootEnv() {
+        try {
+            String[] cmd = { "source", Env.GLOBAL.getValue() };
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -165,5 +176,24 @@ public class EnvFilesService {
 
     public String getEnvValue(String env) {
         return env.replaceAll("^.*=", "");
+    }
+
+    public String getVersionApp() {
+        return version;
+    }
+
+    private void readVersionApp() {
+        try {
+            BufferedReader file = new BufferedReader(new FileReader(VERSION_APP_FILE));
+            String line;
+            while ((line = file.readLine()) != null) {
+                version = line;
+            }
+
+            file.close();
+        } catch (IOException e) {
+            LOGGER.severe("Erro ao ler arquivo: " + VERSION_APP_FILE);
+            LOGGER.severe("Motivo: " + e.getMessage());
+        }
     }
 }
