@@ -15,8 +15,8 @@ O objetivo desse projeto é fornecer uma interface amigável para gerenciar vari
 
 ## Downloads
 
-- [deb x64](./dist/env-editor_v1.0.0_amd64.deb)
-- [tar.gz x64](./dist/env-editor_v1.0.0_amd64.tar.gz)
+- [deb x64](./dist/env-editor_v1.1.1_amd64.deb)
+- [tar.gz x64](./dist/env-editor_v1.1.1_amd64.tar.gz)
 
 
 ## Contribuidor
