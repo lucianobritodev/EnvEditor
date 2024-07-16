@@ -23,7 +23,7 @@ O objetivo desse projeto é fornecer uma interface amigável para gerenciar vari
 
 [Luciano Brito](https://github.com/lucianobritodev)
 
-Brasileiro, casado, nascido em 1991, apaixonado por tecnologia. Graduado em Ánálise e Desenvolvimento de Sistemas pela Universidade Paulista (UNIP) em 2019 e Pós Graduado em Arquitetura de Software pela InfNet em 2023. 
+Brasileiro, casado, nascido em 1991, apaixonado por tecnologia. Graduado em Análise e Desenvolvimento de Sistemas pela Universidade Paulista (UNIP) em 2019 e Pós Graduado em Arquitetura de Software pela InfNet em 2023. 
 
 
 ## Contatos
