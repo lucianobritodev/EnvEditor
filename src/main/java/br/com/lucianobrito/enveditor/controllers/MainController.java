@@ -4,9 +4,15 @@ import br.com.lucianobrito.enveditor.MainApplication;
 import br.com.lucianobrito.enveditor.models.EnvModel;
 import br.com.lucianobrito.enveditor.models.enuns.Env;
 import br.com.lucianobrito.enveditor.service.EnvFilesService;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,20 +23,25 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.converter.BooleanStringConverter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
 
 public class MainController implements Initializable {
 
     private boolean isLocalEnvChanged;
     private boolean isGlobalEnvChanged;
+    private ObservableBooleanValue isMessage;
 
     private static final String USUARIO = "Usuário";
     private static final String SISTEMA = "Sistema";
@@ -134,6 +145,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            isMessage = new SimpleBooleanProperty(false);
             isLocalEnvChanged = false;
             isGlobalEnvChanged = false;
             service = EnvFilesService.getInstance();
@@ -159,19 +171,32 @@ public class MainController implements Initializable {
                         btnGlobalEnvExcluir.setDisable(false);
                     });
 
+            lblMessage.textProperty().addListener(observable -> {
+                StringProperty obs = (StringProperty) observable;
+                if (obs != null && "".equals(obs.getValue())) {
+                    try {
+                        TimeUnit.SECONDS.sleep(5);
+                        this.lblMessage.setText("");
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
     public void cancelar() {
-        MainApplication.stage = null;
-        System.exit(0);
+        sair();
     }
 
-    public void salvar(ActionEvent event) throws InterruptedException {
+    @FXML
+    public void salvar(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
+        boolean isSaveLocal = false;
+        boolean isSaveGlobal = false;
 
         if (isLocalEnvChanged) {
             List<EnvModel> listLocal = new ArrayList<>();
@@ -179,6 +204,7 @@ public class MainController implements Initializable {
                     new EnvModel(service.getEnvKey(item.toString()), service.getEnvValue(item.toString()), null)));
 
             service.salvar(Env.LOCAL, listLocal);
+            isSaveLocal = true;
             recarregarEnvLocal();
         }
 
@@ -188,10 +214,17 @@ public class MainController implements Initializable {
                     new EnvModel(service.getEnvKey(item.toString()), service.getEnvValue(item.toString()), null)));
 
             service.salvar(Env.GLOBAL, listGlobal);
+            isSaveGlobal = true;
             recarregarEnvGlobal();
         }
 
-        cancelar();
+        if (isSaveLocal || isSaveGlobal) {
+            this.lblMessage.setStyle("-fx-text-fill: green;");
+            this.lblMessage.setText("Dados salvos com sucesso!");
+        } else {
+            this.lblMessage.setStyle("-fx-text-fill: orange;");
+            this.lblMessage.setText("Nenhuma alteração foi registrada!");
+        }
     }
 
     private void openModalInclusao(ActionEvent event, Env env, String titulo, ListView<String> listView) {
@@ -268,5 +301,11 @@ public class MainController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @FXML
+    public void sair() {
+        MainApplication.stage = null;
+        System.exit(0);
     }
 }

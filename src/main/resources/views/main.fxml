@@ -33,8 +33,10 @@
             </AnchorPane>
          </items>
       </SplitPane>
-      <Button layoutX="911.0" layoutY="749.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="28.0" prefWidth="94.0" text="Cancelar" />
-      <Button layoutX="1037.0" layoutY="749.0" mnemonicParsing="false" onAction="#salvar" prefHeight="28.0" prefWidth="113.0" text="Salvar e sair" />
-      <Button layoutX="24.0" layoutY="749.0" mnemonicParsing="false" onAction="#sobre" prefHeight="28.0" prefWidth="94.0" text="Sobre" />
+      <Button layoutX="263.0" layoutY="749.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="28.0" prefWidth="94.0" text="Cancelar" />
+      <Button layoutX="925.0" layoutY="750.0" mnemonicParsing="false" onAction="#salvar" prefHeight="28.0" prefWidth="94.0" text="Salvar" />
+      <Button layoutX="159.0" layoutY="749.0" mnemonicParsing="false" onAction="#sobre" prefHeight="28.0" prefWidth="94.0" text="Sobre" />
+      <Button layoutX="1028.0" layoutY="749.0" mnemonicParsing="false" onAction="#sair" prefHeight="28.0" prefWidth="94.0" text="Sair" />
+      <Label fx:id="lblMessage" alignment="CENTER" layoutX="443.0" layoutY="740.0" prefHeight="49.0" prefWidth="395.0" textAlignment="CENTER" />
    </children>
 </Pane>
