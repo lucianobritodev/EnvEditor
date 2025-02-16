@@ -21,7 +21,7 @@ public class EnvFilesService {
     private static FileHandler fileHandler;
     private static EnvFilesService instance;
     private static final String BASH_RC = EnvUtils.USER_HOME + "/.bashrc";
-    private static final String INSTRUCTION_IMPORT = "[ -f " + Env.LOCAL.getValue() + " ] && source ~" + Env.LOCAL.getValue();
+    private static final String INSTRUCTION_IMPORT = "[ -f " + Env.LOCAL.getValue() + " ] && source " + Env.LOCAL.getValue();
 
 
     private final Logger LOGGER = Logger.getLogger(EnvFilesService.class.getName());
