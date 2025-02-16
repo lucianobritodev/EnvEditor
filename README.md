@@ -4,8 +4,8 @@
 ![GitHub License](https://img.shields.io/github/license/lucianobritodev/EnvEditor)
 ![GitHub top language](https://img.shields.io/github/languages/top/lucianobritodev/EnvEditor)
 
-Editor gráfico de variáveis de ambiente para distribuições Linux.
-
+Editor gráfico de variáveis de ambiente para distribuições Linux. <br>
+![Image](https://github.com/user-attachments/assets/a4afc219-4914-4a4d-afae-28511ab2f3ea)
 
 ## Descrição
 
