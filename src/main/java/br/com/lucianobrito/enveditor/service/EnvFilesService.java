@@ -89,8 +89,9 @@ public class EnvFilesService {
         try {
             File file = new File(Env.LOCAL.getValue());
             if (!file.exists()) {
-                Boolean result = file.createNewFile();
-                if (!result) {
+                boolean resultCreateFile = file.createNewFile();
+                boolean resultInsertReadVariables = executeCommand("echo ", INSTRUCTION_IMPORT, " >> " + BASH_RC);
+                if (!resultCreateFile && !resultInsertReadVariables) {
                     throw new RuntimeException("Erro ao criar o arquivo " + Env.LOCAL.getValue());
                 }
             }
@@ -132,7 +133,7 @@ public class EnvFilesService {
             persistFile(file, newEnvModels);
 
             if (Env.GLOBAL.equals(env)) {
-                sourceRootEnv();
+                executeCommand("export", String.format("$(xargs < %s)", Env.GLOBAL.getValue()));
             }
 
         } catch (IOException e) {
@@ -140,7 +141,10 @@ public class EnvFilesService {
             try {
                 File file = new File(EnvUtils.ENV_EDITOR_HOME);
                 file.deleteOnExit();
-                file.createNewFile();
+                boolean resultCreateNewFile = file.createNewFile();
+                if (!resultCreateNewFile) {
+                    throw new RuntimeException("Erro ao persistir arquivo: " + pathEnvPersist);
+                }
                 persistFile(file, newEnvModels);
             } catch (IOException ex) {
                 LOGGER.severe("Erro ao tentar reverter a persistência no arquivo: " + pathEnvPersist);
@@ -149,10 +153,10 @@ public class EnvFilesService {
         }
     }
 
-    private void sourceRootEnv() {
+    private boolean executeCommand(String... cmd) {
         try {
-            String[] cmd = { "source", Env.GLOBAL.getValue() };
-            Runtime.getRuntime().exec(cmd);
+            Process process = Runtime.getRuntime().exec(cmd);
+            return process.exitValue() == 0;
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }

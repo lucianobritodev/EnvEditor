@@ -122,7 +122,7 @@ dist_deb_pack() {
 
 clear_output_dir() {
   echo "Limpando build anterior..."
-  rm -Rf out dist
+  rm -Rf out dist null
 }
 
 build() {
