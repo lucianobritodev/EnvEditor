@@ -21,7 +21,7 @@ public class EnvFilesService {
     private static FileHandler fileHandler;
     private static EnvFilesService instance;
     private static final String BASH_RC = EnvUtils.USER_HOME + "/.bashrc";
-    private static final String INSTRUCTION_IMPORT = "[ -f " + Env.LOCAL + " ] && source " + Env.LOCAL;
+    private static final String INSTRUCTION_IMPORT = "[ -f " + Env.LOCAL.getValue() + " ] && source ~" + Env.LOCAL.getValue();
 
 
     private final Logger LOGGER = Logger.getLogger(EnvFilesService.class.getName());
@@ -90,8 +90,7 @@ public class EnvFilesService {
             File file = new File(Env.LOCAL.getValue());
             if (!file.exists()) {
                 boolean resultCreateFile = file.createNewFile();
-                boolean resultInsertReadVariables = executeCommand("echo ", INSTRUCTION_IMPORT, " >> " + BASH_RC);
-                if (!resultCreateFile && !resultInsertReadVariables) {
+                if (!resultCreateFile) {
                     throw new RuntimeException("Erro ao criar o arquivo " + Env.LOCAL.getValue());
                 }
             }
