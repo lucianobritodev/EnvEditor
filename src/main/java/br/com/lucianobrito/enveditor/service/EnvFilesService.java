@@ -129,12 +129,14 @@ public class EnvFilesService {
         String pathEnvPersist = env.getValue();
         try {
             File file = new File(pathEnvPersist);
-            persistFile(file, newEnvModels);
-
             if (Env.GLOBAL.equals(env)) {
+                persistFile(file, newEnvModels);
                 executeCommand("export", String.format("$(xargs < %s)", Env.GLOBAL.getValue()));
+                return;
             }
 
+            persistFile(true, file, newEnvModels);
+            executeCommand("export", "$(xargs < "+ Env.LOCAL.getValue() +")" );
         } catch (IOException e) {
             LOGGER.severe("Erro ao persistir arquivo: " + pathEnvPersist);
             try {
@@ -161,14 +163,19 @@ public class EnvFilesService {
         }
     }
 
-    private void persistFile(File file, List<EnvModel> list) throws IOException {
+    private void persistFile(boolean isLocal, File file, List<EnvModel> list) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(file, false));
         for (EnvModel envModel : list) {
-            bw.append(envModel.getChave() + "=" + envModel.getValor());
+            String commandExport = isLocal ? "export " : "";
+            bw.append(commandExport + envModel.getChave() + "=" + envModel.getValor());
             bw.newLine();
         }
         bw.flush();
         bw.close();
+    }
+
+    private void persistFile(File file, List<EnvModel> list) throws IOException {
+        persistFile(false, file, list);
     }
 
     public String getEnvKey(String env) {

@@ -42,10 +42,7 @@ BUILD_HOME=env-editor_${APP_VERSION}_${APP_ARCH}
 criate_files() {
   echo "Criando diretórios..."
 
-  mkdir -p dist/${BUILD_HOME}/DEBIAN
-  mkdir -p dist/${BUILD_HOME}/opt/enveditor
-  mkdir -p dist/${BUILD_HOME}/usr/share/applications
-  mkdir -p dist/${BUILD_HOME}/usr/share/icons
+  mkdir -p dist/${BUILD_HOME}/DEBIAN dist/${BUILD_HOME}/opt/enveditor dist/${BUILD_HOME}/usr/share/applications dist/${BUILD_HOME}/usr/share/icons
 
   echo "Copiando arquivos..."
   cp -R target/image/* dist/${BUILD_HOME}/opt/enveditor/
