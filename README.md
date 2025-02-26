@@ -10,7 +10,7 @@ Editor gráfico de variáveis de ambiente para distribuições Linux. <br>
 ## Descrição
 
 Aplicação opensource desenvolvida em Java utilizando JavaFX.
-O objetivo desse projeto é fornecer uma interface amigável para gerenciar variáveis de anbiente em distribuições Línux.
+O objetivo desse projeto é fornecer uma interface amigável para gerenciar variáveis de ambiente em distribuições Línux.
 
 
 ## Downloads
